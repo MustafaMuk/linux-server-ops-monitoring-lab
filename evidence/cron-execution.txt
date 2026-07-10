@@ -1,0 +1,6 @@
+Jul 10 21:36:01 Colonel CRON[4327]: (colonel) CMD (/home/colonel/devops/linux-server-ops-monitoring-lab/scripts/health-check.sh >> /home/colonel/devops/linux-server-ops-monitoring-lab/reports/cron-health-check.log 2>&1)
+Jul 10 21:37:01 Colonel CRON[4369]: (colonel) CMD (/home/colonel/devops/linux-server-ops-monitoring-lab/scripts/health-check.sh >> /home/colonel/devops/linux-server-ops-monitoring-lab/reports/cron-health-check.log 2>&1)
+Jul 10 21:38:01 Colonel CRON[4413]: (colonel) CMD (/home/colonel/devops/linux-server-ops-monitoring-lab/scripts/health-check.sh >> /home/colonel/devops/linux-server-ops-monitoring-lab/reports/cron-health-check.log 2>&1)
+Jul 10 21:39:01 Colonel CRON[4495]: (colonel) CMD (/home/colonel/devops/linux-server-ops-monitoring-lab/scripts/health-check.sh >> /home/colonel/devops/linux-server-ops-monitoring-lab/reports/cron-health-check.log 2>&1)
+Jul 10 21:40:01 Colonel CRON[4537]: (colonel) CMD (/home/colonel/devops/linux-server-ops-monitoring-lab/scripts/health-check.sh >> /home/colonel/devops/linux-server-ops-monitoring-lab/reports/cron-health-check.log 2>&1)
+Jul 10 21:41:01 Colonel CRON[4579]: (colonel) CMD (/home/colonel/devops/linux-server-ops-monitoring-lab/scripts/health-check.sh >> /home/colonel/devops/linux-server-ops-monitoring-lab/reports/cron-health-check.log 2>&1)
