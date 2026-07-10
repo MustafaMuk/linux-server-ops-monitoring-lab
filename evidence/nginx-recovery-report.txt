@@ -1,0 +1,33 @@
+========================================
+ Linux Server Health Report
+========================================
+
+Date and time:
+Fri Jul 10 20:19:20 BST 2026
+
+Hostname:
+Colonel
+
+Current user:
+colonel
+
+System uptime:
+up 51 minutes
+
+Disk usage:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdd       1007G  1.7G  954G   1% /
+
+Memory usage:
+               total        used        free      shared  buff/cache   available
+Mem:           7.6Gi       545Mi       7.0Gi       3.5Mi       244Mi       7.1Gi
+Swap:          2.0Gi          0B       2.0Gi
+
+Nginx service status:
+ACTIVE
+
+Nginx HTTP check:
+HEALTHY - localhost returned HTTP 200
+
+Report location:
+/home/colonel/devops/linux-server-ops-monitoring-lab/reports/health-report.txt

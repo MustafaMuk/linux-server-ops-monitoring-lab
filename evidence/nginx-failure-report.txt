@@ -3,7 +3,7 @@
 ========================================
 
 Date and time:
-Fri Jul 10 16:47:55 BST 2026
+Fri Jul 10 20:18:12 BST 2026
 
 Hostname:
 Colonel
@@ -12,7 +12,7 @@ Current user:
 colonel
 
 System uptime:
-up 5 minutes
+up 50 minutes
 
 Disk usage:
 Filesystem      Size  Used Avail Use% Mounted on
@@ -20,14 +20,14 @@ Filesystem      Size  Used Avail Use% Mounted on
 
 Memory usage:
                total        used        free      shared  buff/cache   available
-Mem:           7.6Gi       544Mi       6.5Gi       3.5Mi       761Mi       7.1Gi
+Mem:           7.6Gi       542Mi       7.0Gi       3.5Mi       244Mi       7.1Gi
 Swap:          2.0Gi          0B       2.0Gi
 
 Nginx service status:
-ACTIVE
+INACTIVE
 
 Nginx HTTP check:
-HEALTHY - localhost returned HTTP 200
+UNHEALTHY - localhost returned HTTP 000
 
 Report location:
 /home/colonel/devops/linux-server-ops-monitoring-lab/reports/health-report.txt
