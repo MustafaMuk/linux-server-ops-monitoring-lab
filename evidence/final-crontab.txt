@@ -1,0 +1,1 @@
+*/15 * * * * /home/colonel/devops/linux-server-ops-monitoring-lab/scripts/run-monitoring-cycle.sh >> /home/colonel/devops/linux-server-ops-monitoring-lab/reports/monitoring-cycle.log 2>&1

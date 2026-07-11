@@ -1,2 +1,4 @@
 reports/health-report.txt
 reports/cron-health-check.log
+web/status.html
+reports/monitoring-cycle.log
