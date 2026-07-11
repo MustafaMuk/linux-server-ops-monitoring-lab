@@ -1,55 +1,123 @@
-# Architecture
+# Project Architecture
 
-This project uses a simple local Linux web server setup.
+## Overview
 
-## Basic Flow
+This project runs and monitors a local Nginx web server inside Ubuntu on WSL2.
 
-Browser or curl
-↓
-localhost
-↓
-Nginx web server
-↓
-/var/www/html/index.html
-↓
-Custom HTML page
+A Bash-based monitoring workflow collects system information, checks Nginx availability, generates reports, builds an HTML dashboard, and publishes that dashboard through Nginx.
 
-## Components
+## Monitoring Workflow
 
-### WSL2 Ubuntu
+```text
+Cron Scheduler
+      |
+      v
+run-monitoring-cycle.sh
+      |
+      +-----------------------------+
+      |                             |
+      v                             v
+health-check.sh            generate-dashboard.sh
+      |                             |
+      v                             v
+health-report.txt              status.html
+                                      |
+                                      v
+                          /var/www/html/status.html
+                                      |
+                                      v
+                           Nginx Web Server
+                                      |
+                                      v
+                       http://localhost/status.html
+```
 
-The Linux environment used for this project.
+## Main Components
 
 ### Nginx
 
-The web server used to serve the custom HTML page.
+Nginx serves the project pages over HTTP.
 
-### Project Web File
+The monitoring dashboard is available at:
 
-The project copy of the webpage is stored at:
+```text
+http://localhost/status.html
+```
 
-web/index.html
+### Health-Check Script
 
-### Nginx Web Root
+The script:
 
-The live webpage served by Nginx is stored at:
+```text
+scripts/health-check.sh
+```
 
-/var/www/html/index.html
+checks:
 
-## Request Flow
+- Hostname
+- Current user
+- Uptime
+- Disk usage
+- Memory usage
+- Nginx service status
+- HTTP response code
 
-When I run:
+### Dashboard Generator
 
-curl localhost
+The script:
 
-or visit:
+```text
+scripts/generate-dashboard.sh
+```
 
-http://localhost
+collects live system information and creates an HTML dashboard.
 
-the request goes to Nginx. Nginx then returns the HTML file from /var/www/html/index.html.
+### Monitoring-Cycle Script
 
-## Why This Matters
+The script:
 
-This shows how a Linux web server serves content from a specific directory.
+```text
+scripts/run-monitoring-cycle.sh
+```
 
-Understanding this is useful for DevOps because web applications, static sites, reverse proxies, containers, and cloud deployments all rely on similar request and service concepts.
+controls the complete workflow:
+
+1. Runs the health check
+2. Generates the dashboard
+3. Publishes the dashboard through Nginx
+4. Records monitoring output
+
+### Cron
+
+Cron runs the monitoring cycle every 15 minutes:
+
+```text
+*/15 * * * *
+```
+
+## Failure Detection
+
+If Nginx is stopped:
+
+- The service check reports `INACTIVE`
+- The HTTP check reports `UNHEALTHY`
+- Curl returns HTTP code `000`
+
+After Nginx is restarted:
+
+- The service check reports `ACTIVE`
+- The HTTP check reports `HEALTHY`
+- Curl returns HTTP code `200`
+
+## Technologies Used
+
+- Ubuntu on WSL2
+- Nginx
+- Bash
+- systemd
+- systemctl
+- journalctl
+- cron
+- curl
+- Git
+- HTML and CSS 
