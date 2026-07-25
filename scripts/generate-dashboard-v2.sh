@@ -207,15 +207,12 @@ cat > "$OUTPUT_FILE" <<EOF
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="60">
     <title>Linux Server Operations Dashboard</title>
-
     <link rel="stylesheet" href="dashboard-v2.css">
 </head>
+
 
 <body>
     <main class="dashboard-shell">
