@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Linux Server Operations Dashboard</title>
+
+    <link rel="stylesheet" href="dashboard-v2.css">
+</head>
+
+<body>
+    <main class="dashboard-shell">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Infrastructure Operations</p>
+
+                <h1>Linux Server Operations Dashboard</h1>
+
+                <p class="subtitle">
+                    Live Linux and Nginx health monitoring generated with
+                    Bash and automatically published through Nginx.
+                </p>
+            </div>
+
+            <div class="header-meta">
+                <span class="meta-pill">Ubuntu WSL2</span>
+                <span class="meta-pill">Host: Colonel</span>
+                <span class="meta-pill">Refresh: 15 minutes</span>
+            </div>
+        </header>
+
+        <section class="status-banner critical">
+            <div class="status-main">
+                <div class="status-icon">×</div>
+
+                <div>
+                    <p class="status-label">Overall server health</p>
+                    <h2 class="status-title">Service disruption detected</h2>
+
+                    <p class="status-description">
+                        A critical service or availability check has failed.
+                    </p>
+                </div>
+            </div>
+
+            <div class="status-time">
+                Last evaluated<br>
+                <strong>21 Jul 2026, 19:54:24 BST</strong>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <h2 class="section-title">System metrics</h2>
+                    <p class="section-note">
+                        Current operating-system and service measurements
+                    </p>
+                </div>
+            </div>
+
+            <div class="metric-grid">
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">CPU Load</span>
+
+                        <span class="health-chip healthy">
+                            HEALTHY
+                        </span>
+                    </div>
+
+                    <div class="metric-value">0.3%</div>
+
+                    <div class="metric-detail">
+                        Load average 0.04 across 12 cores
+                    </div>
+
+                    <div class="progress-track">
+                        <div
+                            class="progress-bar healthy"
+                            style="width: 0%;"
+                        ></div>
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Memory Usage</span>
+
+                        <span class="health-chip healthy">
+                            HEALTHY
+                        </span>
+                    </div>
+
+                    <div class="metric-value">7%</div>
+
+                    <div class="metric-detail">561Mi used out of 7.6Gi</div>
+
+                    <div class="progress-track">
+                        <div
+                            class="progress-bar healthy"
+                            style="width: 7%;"
+                        ></div>
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Disk Usage</span>
+
+                        <span class="health-chip healthy">
+                            HEALTHY
+                        </span>
+                    </div>
+
+                    <div class="metric-value">1%</div>
+
+                    <div class="metric-detail">1.8G used out of 1007G</div>
+
+                    <div class="progress-track">
+                        <div
+                            class="progress-bar healthy"
+                            style="width: 1%;"
+                        ></div>
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">System Uptime</span>
+                        <span class="health-chip healthy">ONLINE</span>
+                    </div>
+
+                    <div class="metric-value">up 5 hours, 14 minutes</div>
+
+                    <div class="metric-detail">
+                        Hostname: Colonel
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Running Processes</span>
+                        <span class="health-chip healthy">LIVE</span>
+                    </div>
+
+                    <div class="metric-value">30</div>
+
+                    <div class="metric-detail">
+                        Current Linux process count
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Nginx Workers</span>
+
+                        <span class="health-chip critical">
+                            CRITICAL
+                        </span>
+                    </div>
+
+                    <div class="metric-value">0</div>
+
+                    <div class="metric-detail">
+                        Active Nginx worker processes
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">HTTP Response</span>
+
+                        <span class="health-chip critical">
+                            CRITICAL
+                        </span>
+                    </div>
+
+                    <div class="metric-value">000</div>
+
+                    <div class="metric-detail">
+                        Response from http://localhost
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Response Time</span>
+
+                        <span class="health-chip critical">
+                            CRITICAL
+                        </span>
+                    </div>
+
+                    <div class="metric-value">0 ms</div>
+
+                    <div class="metric-detail">
+                        Total HTTP request duration
+                    </div>
+
+                    <div class="progress-track">
+                        <div
+                            class="progress-bar critical"
+                            style="width: 0%;"
+                        ></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <h2 class="section-title">Operational checks</h2>
+
+                    <p class="section-note">
+                        Service, availability and capacity verification
+                    </p>
+                </div>
+            </div>
+
+            <div class="operations-grid">
+                <div class="check-list">
+                    <div class="check-row">
+                        <span class="check-name">Nginx service</span>
+                        <span class="check-result">inactive</span>
+
+                        <span class="status-indicator">
+                            <span class="status-dot critical"></span>
+                            CRITICAL
+                        </span>
+                    </div>
+
+                    <div class="check-row">
+                        <span class="check-name">HTTP endpoint</span>
+                        <span class="check-result">HTTP 000</span>
+
+                        <span class="status-indicator">
+                            <span class="status-dot critical"></span>
+                            CRITICAL
+                        </span>
+                    </div>
+
+                    <div class="check-row">
+                        <span class="check-name">Response latency</span>
+                        <span class="check-result">0 ms</span>
+
+                        <span class="status-indicator">
+                            <span class="status-dot critical"></span>
+                            CRITICAL
+                        </span>
+                    </div>
+
+                    <div class="check-row">
+                        <span class="check-name">Memory capacity</span>
+                        <span class="check-result">7% used</span>
+
+                        <span class="status-indicator">
+                            <span class="status-dot healthy"></span>
+                            HEALTHY
+                        </span>
+                    </div>
+
+                    <div class="check-row">
+                        <span class="check-name">Disk capacity</span>
+                        <span class="check-result">1% used</span>
+
+                        <span class="status-indicator">
+                            <span class="status-dot healthy"></span>
+                            HEALTHY
+                        </span>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-time">19:54:24</span>
+                        <span class="timeline-message">
+                            Monitoring cycle collected Linux system metrics.
+                        </span>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">19:54:24</span>
+                        <span class="timeline-message">
+                            Nginx service returned inactive.
+                        </span>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">19:54:24</span>
+                        <span class="timeline-message">
+                            HTTP endpoint returned status 000 in
+                            0 ms.
+                        </span>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-time">19:54:24</span>
+                        <span class="timeline-message">
+                            Dashboard regenerated successfully.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <div>
+                Managed by <strong>Mustafa Mukhtar</strong><br>
+                Generated as part of the Linux Server Operations Lab
+            </div>
+
+            <div class="stack-list">
+                <span class="stack-item">Ubuntu</span>
+                <span class="stack-item">Nginx</span>
+                <span class="stack-item">Bash</span>
+                <span class="stack-item">systemd</span>
+                <span class="stack-item">cron</span>
+                <span class="stack-item">Git</span>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>

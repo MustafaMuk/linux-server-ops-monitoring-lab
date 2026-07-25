@@ -1,159 +1,300 @@
 # Linux Server Operations & Monitoring Lab
 
-## Overview
+A practical Linux operations project demonstrating server administration, Bash automation, service monitoring, incident simulation, recovery verification, and an automatically generated web dashboard.
 
-This project demonstrates practical Linux server administration, monitoring, automation, and troubleshooting using Nginx and Bash.
+Built with **Ubuntu on WSL2, Bash, systemd, cron, curl, Git, HTML/CSS, and Nginx**.
 
-I built and managed a local Nginx web server, created automated system-health checks, investigated service logs, simulated an outage, recovered the service, and generated a browser-based monitoring dashboard.
+![Healthy Linux Server Operations Dashboard](evidence/screenshots/dashboard-v2/healthy-dashboard.png)
 
-## Features
+## Project Overview
 
-- Nginx web-server installation and management
-- Custom HTML webpage
-- Linux service management with `systemctl`
-- Log investigation using `journalctl` and Nginx logs
-- Bash system-health checks
-- Nginx service and HTTP availability monitoring
-- Controlled failure and recovery testing
-- Cron scheduling every 15 minutes
-- Automatic HTML dashboard generation
-- Dashboard publishing through Nginx
-- Git-managed documentation and evidence
+This project simulates the responsibilities involved in operating and monitoring a small Linux web server.
+
+The lab includes:
+
+- Installing and managing an Nginx web server
+- Inspecting services with `systemctl`
+- Investigating system and Nginx logs
+- Collecting Linux health metrics with Bash
+- Checking service and HTTP availability
+- Classifying health as healthy, warning, or critical
+- Simulating an Nginx service outage
+- Detecting the incident and verifying recovery
+- Generating a responsive HTML monitoring dashboard
+- Publishing the dashboard through Nginx
+- Running the complete monitoring cycle every 15 minutes with cron
+- Preserving terminal, HTML, and screenshot evidence in Git
 
 ## Monitoring Dashboard
 
-The local dashboard is served at:
+The dashboard is generated from live Linux and Nginx measurements and served locally at:
 
-`http://localhost/status.html`
+```text
+http://localhost/status-v2.html
+```
 
 It displays:
 
 - Overall server health
-- Hostname
-- Current user
-- System uptime
-- Disk usage
+- CPU load estimate
 - Memory usage
-- Nginx service status
-- HTTP response code
-- Last update time
+- Disk usage
+- System uptime
+- Running process count
+- Active Nginx worker count
+- Nginx service state
+- HTTP response result
+- HTTP response time
+- Monitoring-cycle event history
+- Last evaluation timestamp
 
-## Project Structure
+The page is a generated HTML snapshot. Cron regenerates and republishes it every 15 minutes.
 
-    linux-server-ops-monitoring-lab/
-    ├── README.md
-    ├── docs/
-    │   ├── architecture.md
-    │   ├── cron-automation.md
-    │   ├── dashboard-automation.md
-    │   ├── health-check-script.md
-    │   ├── log-investigation.md
-    │   ├── nginx-setup.md
-    │   ├── service-management.md
-    │   └── troubleshooting.md
-    ├── evidence/
-    │   ├── command-outputs.md
-    │   ├── cron-execution.txt
-    │   ├── cron-health-check-sample.txt
-    │   ├── final-crontab.txt
-    │   ├── nginx-failure-report.txt
-    │   ├── nginx-recovery-report.txt
-    │   └── status-dashboard-sample.html
-    ├── reports/
-    ├── scripts/
-    │   ├── generate-dashboard.sh
-    │   ├── health-check.sh
-    │   └── run-monitoring-cycle.sh
-    ├── web/
-    │   └── index.html
-    └── reflection.md
+## Dashboard Health States
+
+### Healthy state
+
+The healthy state confirms that Nginx is active and the local HTTP endpoint is responding normally.
+
+![Healthy dashboard](evidence/screenshots/dashboard-v2/healthy-dashboard.png)
+
+### Critical state
+
+For the controlled incident test, Nginx was deliberately stopped. The monitoring system detected:
+
+- Inactive Nginx service
+- Zero active Nginx workers
+- Failed HTTP availability check
+- Critical overall server health
+
+![Critical dashboard](evidence/screenshots/dashboard-v2/critical-dashboard.png)
+
+`HTTP 000` is not a real HTTP response status. It is the value used by the monitoring script when curl cannot establish a successful HTTP connection.
+
+## Automated Monitoring Workflow
+
+```text
+cron — every 15 minutes
+        |
+        v
+scripts/run-monitoring-cycle.sh
+        |
+        +--> scripts/health-check.sh
+        |       |
+        |       +--> Linux resource checks
+        |       +--> Nginx service check
+        |       +--> HTTP availability check
+        |
+        +--> scripts/generate-dashboard-v2.sh
+        |       |
+        |       +--> Metric collection
+        |       +--> Health classification
+        |       +--> HTML generation
+        |
+        +--> /var/www/html/status-v2.html
+                |
+                v
+              Nginx
+                |
+                v
+     http://localhost/status-v2.html
+```
+
+The scheduled cron expression is:
+
+```cron
+*/15 * * * *
+```
+
+The complete cron command runs `scripts/run-monitoring-cycle.sh` and writes execution output to the monitoring-cycle log.
+
+## Health Classification
+
+The dashboard uses defined thresholds to classify resource health.
+
+| Check | Warning | Critical |
+|---|---:|---:|
+| CPU load estimate | 70% | 90% |
+| Memory usage | 75% | 90% |
+| Disk usage | 75% | 90% |
+| HTTP response time | 300 ms | 1000 ms |
+
+Nginx and HTTP checks are classified as critical when:
+
+- The Nginx service is not active
+- The HTTP endpoint does not return status `200`
+
+A failed HTTP request also makes response latency critical because no valid response time was received.
 
 ## Main Scripts
 
-### Health Check
+### System health check
 
-Run:
+```bash
+./scripts/health-check.sh
+```
 
-`./scripts/health-check.sh`
+Collects Linux resource information and checks:
 
-This script checks Linux system health, Nginx service status, and HTTP availability.
+- System uptime
+- CPU load
+- Memory usage
+- Disk usage
+- Process count
+- Nginx service state
+- HTTP availability
 
-### Dashboard Generator
+### Dashboard generator
 
-Run:
+```bash
+./scripts/generate-dashboard-v2.sh
+```
 
-`./scripts/generate-dashboard.sh`
+Collects live metrics, applies health classifications, and generates:
 
-This script collects live system information and generates the HTML monitoring dashboard.
+```text
+web/status-v2.html
+```
 
-### Complete Monitoring Cycle
+The changing generated page is excluded from Git because it is recreated during every monitoring cycle.
 
-Run:
+### Complete monitoring cycle
 
-`./scripts/run-monitoring-cycle.sh`
+```bash
+./scripts/run-monitoring-cycle.sh
+```
 
-This script:
+The monitoring cycle:
 
 1. Runs the system health check
-2. Generates the dashboard
-3. Publishes the dashboard through Nginx
-4. Records monitoring output
+2. Generates Dashboard V2
+3. Publishes the dashboard into the Nginx document root
+4. Records monitoring output in the reports directory
 
-## Service Management
-
-Commands practised:
-
-- `systemctl status nginx`
-- `sudo systemctl stop nginx`
-- `sudo systemctl start nginx`
-- `sudo systemctl restart nginx`
-- `systemctl is-active nginx`
-
-## Log Investigation
-
-Commands practised:
-
-- `sudo journalctl -u nginx --no-pager`
-- `sudo tail -20 /var/log/nginx/access.log`
-- `sudo tail -20 /var/log/nginx/error.log`
-
-## Monitoring Schedule
-
-Cron runs the complete monitoring cycle every 15 minutes:
-
-`*/15 * * * *`
+![Monitoring cycle terminal evidence](evidence/screenshots/dashboard-v2/monitoring-cycle-terminal.png)
 
 ## Failure and Recovery Test
 
-I deliberately stopped Nginx and confirmed that the monitoring script detected:
+A controlled Nginx outage was used to verify that the monitoring system detects real failures.
 
-- `INACTIVE`
-- `UNHEALTHY`
-- HTTP code `000`
+The test process was:
 
-After restarting Nginx, the script confirmed recovery:
+```bash
+sudo systemctl stop nginx
+./scripts/generate-dashboard-v2.sh
+```
 
-- `ACTIVE`
-- `HEALTHY`
-- HTTP code `200`
+The dashboard correctly reported a critical service disruption.
+
+Nginx was then recovered with:
+
+```bash
+sudo systemctl start nginx
+./scripts/generate-dashboard-v2.sh
+```
+
+Recovery was confirmed through:
+
+- `systemctl is-active nginx`
+- Active Nginx worker processes
+- HTTP status `200`
+- A healthy regenerated dashboard
+
+Static healthy and critical HTML snapshots are preserved under:
+
+```text
+evidence/dashboard-v2/
+```
+
+## Service Management
+
+Commands practised during the lab include:
+
+```bash
+systemctl status nginx
+systemctl is-active nginx
+sudo systemctl stop nginx
+sudo systemctl start nginx
+sudo systemctl restart nginx
+```
+
+## Log Investigation
+
+Nginx service and request activity were investigated with:
+
+```bash
+sudo journalctl -u nginx --no-pager
+sudo tail -20 /var/log/nginx/access.log
+sudo tail -20 /var/log/nginx/error.log
+```
+
+These commands were used to examine service behaviour, HTTP requests, errors, failure events, and recovery.
+
+## Project Structure
+
+```text
+linux-server-ops-monitoring-lab/
+├── README.md
+├── docs/
+│   ├── architecture.md
+│   ├── cron-automation.md
+│   ├── dashboard-automation.md
+│   ├── health-check-script.md
+│   ├── log-investigation.md
+│   ├── nginx-setup.md
+│   ├── service-management.md
+│   └── troubleshooting.md
+├── evidence/
+│   ├── dashboard-v2/
+│   │   ├── critical.html
+│   │   ├── dashboard-v2.css
+│   │   └── healthy.html
+│   ├── screenshots/
+│   │   └── dashboard-v2/
+│   │       ├── critical-dashboard.png
+│   │       ├── healthy-dashboard.png
+│   │       └── monitoring-cycle-terminal.png
+│   ├── command-outputs.md
+│   ├── cron-execution.txt
+│   ├── cron-health-check-sample.txt
+│   ├── final-crontab.txt
+│   ├── nginx-failure-report.txt
+│   ├── nginx-recovery-report.txt
+│   └── status-dashboard-sample.html
+├── reports/
+├── scripts/
+│   ├── generate-dashboard.sh
+│   ├── generate-dashboard-v2.sh
+│   ├── health-check.sh
+│   └── run-monitoring-cycle.sh
+├── web/
+│   ├── dashboard-v2.css
+│   └── index.html
+└── reflection.md
+```
 
 ## Skills Demonstrated
 
 - Linux system administration
-- Nginx administration
+- Nginx installation and administration
 - Bash scripting
-- Service management
-- System monitoring
-- HTTP health checks
-- Log analysis
-- Cron automation
-- Incident simulation and recovery
-- Git version control
+- Service management with systemd
+- Linux resource monitoring
+- HTTP health checks with curl
+- Log investigation with journalctl
+- Cron-based task automation
+- Monitoring threshold design
+- Incident simulation and troubleshooting
+- Service recovery and verification
+- HTML and CSS dashboard development
+- Git branching and version control
 - Technical documentation
+- Evidence-driven project delivery
 
-## Tools Used
+## Tools and Technologies
 
 - Ubuntu on WSL2
+- Linux
 - Nginx
 - Bash
 - systemd
@@ -162,4 +303,15 @@ After restarting Nginx, the script confirmed recovery:
 - cron
 - curl
 - Git
-- HTML and CSS
+- HTML
+- CSS
+
+## Key Learning Outcome
+
+This project moved beyond running individual Linux commands. It combined system administration, automation, monitoring, troubleshooting, recovery, web publishing, and documentation into one repeatable operational workflow.
+
+The result is a working Linux monitoring lab that detects service health, records evidence, responds visibly to failures, and automatically publishes its current state through Nginx.
+
+---
+
+Built by **Mustafa Mukhtar** as part of a practical DevOps and Linux engineering portfolio.
